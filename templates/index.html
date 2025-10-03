@@ -22,7 +22,6 @@
             });
         }
 
-
         document.addEventListener('DOMContentLoaded', () => {
             filterParticipants();
         });
@@ -32,21 +31,14 @@
 <body>
     <div class="container">
         <header>
-            <h1>Google Developer Student Club - SRCASW</h1>
-            <h2>SRCASW - GenAI Study Jams 2024</h2>
+            <h1>Google Developer GROUP ON CAMPUS - SRCASW</h1>
+            <h2>SRCASW - GOOGLE CLOUD STUDY JAMS 2025</h2>
         </header>
-        <!-- work in progress -->
-        <!-- <div class="stats"></div>
-        <div class="stat-boxes">
-            <div class="stat-box">
-                <p>No of Eligible<br>Participants for Certificates</p>
-                <h3 id="eligibleCount">{{ eligible_count }}</h3>
-            </div>
-            <div class="stat-box">
-                <p>Total No of<br>Participants {{ total_count }}</p>
-                <h3 id="totalCount">{{ total_count }}</h3>
-            </div>
-        </div> -->
+
+        <!-- ✅ Completion Counter -->
+        <div class="progress-counter">
+            <p><strong>{{ completed_count }}/100</strong> participants have completed the program ✅</p>
+        </div>
 
         <!-- Search bar -->
         <input type="text" id="search-input" oninput="filterParticipants()" placeholder="Search by name...">
@@ -65,13 +57,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- loop to dynamically generate rows -->
                     {% for participant in participants %}
                     <tr>
                         <td data-label="Name">{{ participant.name }}</td>
                         <td data-label="Redemption Status"><span
-                                class="status {{ participant.redemption_status|lower }}">{{
-                                participant.redemption_status }}</span></td>
+                                class="status {{ participant.redemption_status|lower }}">{{ participant.redemption_status }}</span></td>
                         <td data-label="Cloud Skill Boost Profile"><a href="{{ participant.profile_url }}"
                                 target="_blank" class="public-profile">Public Profile</a></td>
                         <td data-label="GenAI Study Jam Completion"><span
@@ -81,7 +71,6 @@
                         <td data-label="No. of Arcades Completed">{{ participant.num_arcade_games }}</td>
                     </tr>
                     {% endfor %}
-
                 </tbody>
             </table>
         </div>

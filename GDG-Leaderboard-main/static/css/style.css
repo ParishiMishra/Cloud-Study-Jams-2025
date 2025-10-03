@@ -1,0 +1,248 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+}
+
+/* Responsive Table */
+.table-responsive {
+    overflow-x: auto; 
+    -webkit-overflow-scrolling: touch;
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse; 
+}
+
+
+.styled-table th, .styled-table td {
+    padding: 12px 10px; 
+    font-size: 14px; 
+}
+
+@media (max-width: 600px) {
+    /* Adjustments for small screens */
+    .styled-table th, .styled-table td {
+        padding: 10px 5px; 
+        font-size: 12px; 
+    }
+    
+    .styled-table thead {
+        display: none;
+    }
+    
+    .styled-table tr {
+        display: block; 
+        margin-bottom: 10px; 
+    }
+    
+    .styled-table td {
+        display: flex; 
+        justify-content: space-between; 
+        padding: 8px; 
+        border: 1px solid #dddddd;
+    }
+
+    /* display labels */
+    .styled-table td:before {
+        content: attr(data-label); 
+        flex: 1; 
+        font-weight: bold;
+        color: #1A73E8; 
+    }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header h1, header h2 {
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+}
+
+h1 {
+    font-size: 32px;
+    color: #1A73E8; 
+}
+
+h2 {
+    font-size: 24px;
+    color: #555;
+}
+
+/* Table styling */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Header styling */
+.styled-table thead {
+    border-radius: 10px 10px 0 0; 
+    overflow: hidden; 
+}
+.styled-table thead th {
+    border-right: 1px solid rgb(43, 42, 42); 
+}
+
+
+.styled-table thead th:last-child {
+    border-right: none; 
+}
+
+.styled-table thead th {
+    padding: 12px 15px;
+    text-align: center; 
+    background-color: #1A73E8; 
+    color: #e8e8e8; 
+}
+
+.styled-table thead tr {
+    background-color: #1a73e8e1;
+    color: #e7dddd;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* Individual cell styling */
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+    text-align: center; 
+    vertical-align: middle; 
+    font-size: 14px;
+    color: rgb(43, 42, 42); 
+}
+
+.styled-table tbody tr:last-of-type td {
+    border-bottom: 2px solid #1A73E8;
+    border-radius: 0 10px 10px 10px; 
+}
+
+/* Status styling */
+.status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 12px; /* Smaller text for status */
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.status.yes {
+    background-color: #34A853;
+}
+
+.status.no {
+    background-color: #EA4335;
+}
+
+.status.done {
+    background-color: #34A853; 
+}
+
+.status.pending {
+    background-color: #FBBC05; 
+}
+
+.status.completed {
+    background-color: #1A73E8; 
+}
+
+/* Public Profile Link */
+.public-profile {
+    color: #1A73E8;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.public-profile:hover {
+    text-decoration: underline;
+}
+
+/* Button styling */
+button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #1A73E8;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0f58d0;
+}
+
+/*stats and search */
+/* work in progress
+.stats {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.stat-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.stat-box {
+    background-color: #8badef;
+    border-radius: 10px;
+    padding: 15px;
+    width: 200px;
+}
+
+.stat-box p {
+    margin: 0;
+    font-size: 14px;
+    color: #1b1a1a;
+}
+
+.stat-box h3 {
+    margin: 10px 0 0;
+    font-size: 24px;
+    color: #1A73E8;
+}
+*/
+.search-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-container i {
+    position: relative;
+    left: 15px;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+#search-input {
+    width: 70%;
+    padding: 12px 20px 12px 45px;
+    border: none;
+    border-radius: 30px;
+    background-color: #e3e4e6;
+    font-size: 16px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-left: 10%;
+    align-self: center;
+}
+
+#search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #1A73E8;
+}

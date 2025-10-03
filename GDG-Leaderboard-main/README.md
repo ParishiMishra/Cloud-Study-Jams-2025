@@ -1,1 +1,1 @@
-This website is targeted to GDSC so that they can provide a leaderboard for study jams
+GDG SRCASW CLOUD STUDY JAMS LEADERBOARD 2025

@@ -41,7 +41,11 @@
         </div>
 
         <!-- Search bar -->
-        <input type="text" id="search-input" oninput="filterParticipants()" placeholder="Search by name...">
+        <div class="search-container">
+            <label for="search-input" class="sr-only">Search participants</label>
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input type="text" id="search-input" oninput="filterParticipants()" placeholder="Search by name..." aria-label="Search participants">
+        </div>
 
         <!-- participants table -->
         <div class="table-responsive">

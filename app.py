@@ -25,16 +25,25 @@ def read_csv():
 def ranking_key(participant):
     num_skill_badges = int(participant['num_skill_badges']) if participant['num_skill_badges'].isdigit() else 0
     num_arcade_games = int(participant['num_arcade_games']) if participant['num_arcade_games'].isdigit() else 0
-    # Desired ordering:
-    # 1) Participants who have completed at least 1 arcade game (num_arcade_games >= 1),
-    #    ordered by number of skill badges (descending). Those who also have >=19 badges
-    #    naturally appear at the top of this group because of badge count.
-    # 2) Participants with 0 arcade games, ordered by number of skill badges (descending)
-    # 3) Fallback (shouldn't be needed) - keep them at the end.
 
-    arcade_done = 0 if num_arcade_games >= 1 else 1
-    # Lower tuple sorts earlier; use negative badges so higher badge counts come first
-    return (arcade_done, -num_skill_badges)
+    # Priority system:
+    # 0 → Skill badges + arcade done
+    # 1 → Only skill badges (no arcade)
+    # 2 → No badges but arcade done
+    # 3 → No badges, no arcade
+    if num_skill_badges > 0 and num_arcade_games >= 1:
+        rank_group = 0
+    elif num_skill_badges > 0 and num_arcade_games == 0:
+        rank_group = 1
+    elif num_skill_badges == 0 and num_arcade_games >= 1:
+        rank_group = 2
+    else:
+        rank_group = 3
+
+    # Sort primarily by group, then by descending number of skill badges
+    return (rank_group, -num_skill_badges)
+
+
 
     
 @app.route('/')

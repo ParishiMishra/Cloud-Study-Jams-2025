@@ -71,7 +71,8 @@ def index():
         'index.html',
         participants=participants,
         total_count=total_count,
-        eligible_count=eligible_count
+        eligible_count=eligible_count,
+        completed_count=eligible_count
     )
 
 

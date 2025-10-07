@@ -57,7 +57,7 @@ def index():
         num_skill_badges = int(participant['num_skill_badges']) if participant['num_skill_badges'].isdigit() else 0
         num_arcade_games = int(participant['num_arcade_games']) if participant['num_arcade_games'].isdigit() else 0
 
-        if num_skill_badges >= 19 and num_arcade_games >= 1:
+        if num_skill_badges >= 16 and num_arcade_games >= 1:
             participant['completion'] = 'Yes'
             eligible_count += 1
         else:

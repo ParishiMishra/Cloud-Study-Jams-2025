@@ -194,6 +194,10 @@ h2 {
     background-color: #1A73E8; 
 }
 
+.status.in-progress {
+    background-color: #FBBC05;
+}
+
 /* Public Profile Link */
 .public-profile {
     color: #1A73E8;

@@ -6,73 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GDG SRCASW CLOUD STUDY JAMS LEADERBOARD</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
-    <script>
-        // function for searching 
-        function filterParticipants() {
-            let query = document.getElementById('search-input').value.toLowerCase();
-            let rows = document.querySelectorAll('tbody tr');
-
-            rows.forEach(row => {
-                let name = row.querySelector('td:first-child').textContent.toLowerCase();
-                if (name.includes(query) || query === '') {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            filterParticipants();
-        });
-    </script>
 </head>
 
 <body>
     <div class="container">
         <header>
             <h1>Google Developer Group On Campus - SRCASW</h1>
-            <h2>SRCASW - GOOGLE CLOUD STUDY JAMS 2025</h2>
+            <h2>SRCASW - GOOGLE CLOUD STUDY JAMS 2026</h2>
         </header>
 
-        <!-- ✅ Completion Counter -->
         <div class="progress-counter">
-            <p><strong>{{ completed_count }}/100</strong> participants have completed the program ✅</p>
+            <p>
+                <strong>{{ completed_count }} / {{ total_count }}</strong> participants have completed the
+                program with {{ completion_badges }} skill badges ✅
+            </p>
         </div>
 
         <!-- Search bar -->
         <div class="search-container">
             <label for="search-input" class="sr-only">Search participants</label>
-            <i class="fa fa-search" aria-hidden="true"></i>
-            <input type="text" id="search-input" oninput="filterParticipants()" placeholder="Search by name..." aria-label="Search participants">
+            <input type="search" id="search-input" placeholder="Search by name..." aria-label="Search participants">
         </div>
 
-        <!-- participants table -->
         <div class="table-responsive">
-            <table class="styled-table">
+            <table class="styled-table" id="participants-table">
                 <thead>
                     <tr>
+                        <th>Rank</th>
                         <th>Name</th>
-                        <th>Redemption Status</th>
-                        <th>Cloud Skill Boost Profile</th>
-                        <th>Completion of Chapter and Arcade</th>
-                        <th>No. of Chapter Completed</th>
-                        <th>No. of Arcade Completed</th>
+                        <th>Skill Badges</th>
+                        <th>Milestone</th>
+                        <th>GEAR Badges</th>
+                        <th>Program Completion</th>
+                        <th>Skills Profile</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for participant in participants %}
-                    <tr>
+                    <tr data-name="{{ participant.name }}">
+                        <td data-label="Rank">{{ participant.rank }}</td>
                         <td data-label="Name">{{ participant.name }}</td>
-                        <td data-label="Redemption Status"><span
-                                class="status {{ participant.redemption_status|lower }}">{{ participant.redemption_status }}</span></td>
-                        <td data-label="Cloud Skill Boost Profile"><a href="{{ participant.profile_url }}"
-                                target="_blank" class="public-profile">Public Profile</a></td>
-                        <td data-label="GenAI Study Jam Completion"><span
-                                class="status {{ participant.completion|lower }}">{{ participant.completion }}</span>
+                        <td data-label="Skill Badges">{{ participant.num_skill_badges }}</td>
+                        <td data-label="Milestone">{{ participant.milestone }}</td>
+                        <td data-label="GEAR Badges">{{ participant.gear_badges }}</td>
+                        <td data-label="Program Completion">
+                            {% if participant.completion %}
+                            <span class="status completed">Completed</span>
+                            {% else %}
+                            <span class="status in-progress">In progress</span>
+                            {% endif %}
                         </td>
-                        <td data-label="No. of Skill Badges Completed">{{ participant.num_skill_badges }}</td>
-                        <td data-label="No. of Arcades Completed">{{ participant.num_arcade_games }}</td>
+                        <td data-label="Skills Profile">
+                            {% if participant.profile_url and participant.profile_url != 'Not applicable' %}
+                            <a href="{{ participant.profile_url }}" target="_blank" rel="noopener noreferrer" class="public-profile">Public Profile</a>
+                            {% else %}
+                            Not available
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

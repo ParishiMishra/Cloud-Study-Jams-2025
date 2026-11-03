@@ -1,81 +1,70 @@
-from flask import Flask, render_template
 import csv
+from pathlib import Path
+
+from flask import Flask, render_template
 
 app = Flask(__name__)
+
+PROGRAM_COMPLETION_BADGES = 10
+PARTICIPANTS_CSV = Path(__file__).with_name('participants.csv')
 
 
 def read_csv():
     participants = []
-    with open('participants.csv', 'r') as file:
+    required_columns = {
+        'User Name',
+        'Google Skills Profile URL',
+        'Milestone Completed',
+        'GEAR Digital Badges',
+        'Skill Badges Completed Count',
+    }
+
+    with PARTICIPANTS_CSV.open('r', newline='', encoding='utf-8-sig') as file:
         csv_reader = csv.DictReader(file)
-        for row in csv_reader:
+        missing_columns = required_columns.difference(csv_reader.fieldnames or [])
+        if missing_columns:
+            raise ValueError(
+                f"participants.csv is missing required columns: {', '.join(sorted(missing_columns))}"
+            )
+
+        for line_number, row in enumerate(csv_reader, start=2):
+            try:
+                num_skill_badges = int(row['Skill Badges Completed Count'].strip())
+            except (AttributeError, ValueError) as error:
+                raise ValueError(
+                    f"Invalid skill badge count on participants.csv line {line_number}"
+                ) from error
+
             participants.append({
                 'name': row['User Name'],
-                'email': row['User Email'],
-                'profile_url': row['Google Cloud Skills Boost Profile URL'],
-                'profile_status': row['Profile URL Status'],
-                'redemption_status': row['Access Code Redemption Status'],
-                'skill_badges_completed': row['All Skill Badges & Games Completed'],
-                'num_skill_badges': row['# of Skill Badges Completed'],
-                'completion': row['All Skill Badges & Games Completed'],
-                'num_arcade_games': row['# of Arcade Games Completed'],
+                'profile_url': row['Google Skills Profile URL'],
+                'milestone': row['Milestone Completed'],
+                'gear_badges': row['GEAR Digital Badges'],
+                'num_skill_badges': num_skill_badges,
+                'completion': num_skill_badges >= PROGRAM_COMPLETION_BADGES,
             })
     return participants
 
+
 def ranking_key(participant):
-    num_skill_badges = int(participant['num_skill_badges']) if participant['num_skill_badges'].isdigit() else 0
-    num_arcade_games = int(participant['num_arcade_games']) if participant['num_arcade_games'].isdigit() else 0
-
-    # Priority system:
-    # 0 → Skill badges + arcade done
-    # 1 → Only skill badges (no arcade)
-    # 2 → No badges but arcade done
-    # 3 → No badges, no arcade
-    if num_skill_badges > 0 and num_arcade_games >= 1:
-        rank_group = 0
-    elif num_skill_badges > 0 and num_arcade_games == 0:
-        rank_group = 1
-    elif num_skill_badges == 0 and num_arcade_games >= 1:
-        rank_group = 2
-    else:
-        rank_group = 3
-
-    # Sort primarily by group, then by descending number of skill badges
-    return (rank_group, -num_skill_badges)
+    return (-participant['num_skill_badges'], participant['name'].casefold())
 
 
-
-    
 @app.route('/')
 def index():
-    
     participants = read_csv()
-    total_count = 0
-    eligible_count = 0   # number of completed participants
-
-    for participant in participants:
-        num_skill_badges = int(participant['num_skill_badges']) if participant['num_skill_badges'].isdigit() else 0
-        num_arcade_games = int(participant['num_arcade_games']) if participant['num_arcade_games'].isdigit() else 0
-
-        if num_skill_badges >= 19 and num_arcade_games >= 1:
-            participant['completion'] = 'Yes'
-            eligible_count += 1
-        else:
-            participant['completion'] = 'No'
-
-        total_count += 1
-
     participants.sort(key=ranking_key)
+    for rank, participant in enumerate(participants, start=1):
+        participant['rank'] = rank
 
     return render_template(
         'index.html',
         participants=participants,
-        total_count=total_count,
-        eligible_count=eligible_count,
-        completed_count=eligible_count
+        total_count=len(participants),
+        completed_count=sum(participant['completion'] for participant in participants),
+        completion_badges=PROGRAM_COMPLETION_BADGES,
     )
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
